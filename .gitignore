@@ -1,0 +1,11 @@
+# Ignore VSCode settings
+.vscode/
+
+# Ignore virtual environment
+env_rbms/
+
+# Ignore Python cache files
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
