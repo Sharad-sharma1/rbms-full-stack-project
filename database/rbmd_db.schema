@@ -1,0 +1,29 @@
+CREATE DATABASE rbmd_db;
+
+USE rbmd_db;
+
+CREATE TABLE user_detail (
+    pk_user_id INT AUTO_INCREMENT PRIMARY KEY,  
+    user_name VARCHAR(100) NOT NULL,            
+    email_id VARCHAR(200) NOT NULL UNIQUE,      
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,    
+    password VARCHAR(400) NOT NULL,             
+    role VARCHAR(100) NOT NULL,                 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,                         
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP 
+);
+
+
+CREATE TABLE mortgages (
+    id INT AUTO_INCREMENT PRIMARY KEY,                          
+    credit_score INT UNSIGNED NOT NULL,                         
+    loan_amount DECIMAL(50,2) NOT NULL,                         
+    property_value DECIMAL(50,2) NOT NULL,                      
+    annual_income DECIMAL(50,2) NOT NULL,                       
+    debt_amount DECIMAL(50,2) NOT NULL,                         
+    loan_type ENUM('fixed', 'adjustable') NOT NULL,             
+    property_type ENUM('single_family', 'condo') NOT NULL,      
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,                    
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,             
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP 
+);

@@ -9,3 +9,5 @@ env_rbms/
 *.pyc
 *.pyo
 *.pyd
+
+/frontend/rbms_fe/node_modules
