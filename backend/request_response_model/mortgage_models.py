@@ -24,6 +24,6 @@ class MortgageCreateRequestModel(BaseModel):
 class MortgageGetRequestModel(BaseModel):
     id: Optional[conint(ge=1)] = None
     page: Optional[conint(ge=1)] = 1
-    page_size: Optional[conint(ge=100, le=500)] = 100
+    page_size: Optional[conint(ge=50, le=500)] = 50
 
 

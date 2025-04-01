@@ -16,6 +16,7 @@ export default function UpdateMortgage() {
   };
 
   const [formData, setFormData] = useState(initialFormData);
+  const [errorMessages, setErrorMessages] = useState({}); // To store error messages
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -37,21 +38,24 @@ export default function UpdateMortgage() {
       });
 
       if (!response.ok) {
-        throw new Error(`Server Error: ${response.status}`);
+        const result = await response.json();
+        
+        // Handle validation errors from the backend
+        if (result.detail) {
+          const errors = result.detail.map((err) => `${err.loc[1]}: ${err.msg}`);
+          setErrorMessages(errors);  // Update error messages state
+        } else {
+          throw new Error(`Server Error: ${response.status}`);
+        }
+        return;  // Stop further processing if validation fails
       }
 
       const result = await response.json();
-
-      if (result.status === "success") {
-        window.alert(result.data.message); // Correctly handle the success message
-        navigate("/"); // Redirect to home
-      } else {
-        window.alert("Failed to update mortgage. Please try again.");
-      }
-
+      window.alert(result.message); // Show success message
+      navigate("/"); // Redirect to home page
     } catch (error) {
       console.error("Error:", error);
-
+      
       if (error.message.includes("Failed to fetch")) {
         window.alert("Server is unreachable. Please try again later.");
       } else {
@@ -64,43 +68,102 @@ export default function UpdateMortgage() {
     <div className="container my-4">
       <div className="row">
         <div className="col-md-8 mx-auto rounded border p-4">
-          <h2 className="text-center mb-5">Update Mortgage</h2>
+          <h2 className="text-center mb-5">Create Mortgage</h2>
+
+          {/* Display error messages */}
+          {errorMessages.length > 0 && (
+            <div className="alert alert-danger">
+              <ul>
+                {errorMessages.map((msg, idx) => (
+                  <li key={idx}>{msg}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <label className="form-label">Credit Score (300-850)</label>
-              <input type="number" className="form-control" name="credit_score" value={formData.credit_score} onChange={handleChange} required />
+              <input
+                type="number"
+                className="form-control"
+                name="credit_score"
+                value={formData.credit_score}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className="mb-3">
               <label className="form-label">Loan Amount (₹)</label>
-              <input type="number" className="form-control" name="loan_amount" value={formData.loan_amount} onChange={handleChange} required />
+              <input
+                type="number"
+                className="form-control"
+                name="loan_amount"
+                value={formData.loan_amount}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className="mb-3">
               <label className="form-label">Property Value (₹)</label>
-              <input type="number" className="form-control" name="property_value" value={formData.property_value} onChange={handleChange} required />
+              <input
+                type="number"
+                className="form-control"
+                name="property_value"
+                value={formData.property_value}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className="mb-3">
               <label className="form-label">Annual Income (₹)</label>
-              <input type="number" className="form-control" name="annual_income" value={formData.annual_income} onChange={handleChange} required />
+              <input
+                type="number"
+                className="form-control"
+                name="annual_income"
+                value={formData.annual_income}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className="mb-3">
               <label className="form-label">Debt Amount (₹)</label>
-              <input type="number" className="form-control" name="debt_amount" value={formData.debt_amount} onChange={handleChange} required />
+              <input
+                type="number"
+                className="form-control"
+                name="debt_amount"
+                value={formData.debt_amount}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className="mb-3">
               <label className="form-label">Loan Type</label>
-              <select className="form-select" name="loan_type" value={formData.loan_type} onChange={handleChange}>
+              <select
+                className="form-select"
+                name="loan_type"
+                value={formData.loan_type}
+                onChange={handleChange}
+              >
                 <option value="fixed">Fixed</option>
                 <option value="adjustable">Adjustable</option>
               </select>
             </div>
             <div className="mb-3">
               <label className="form-label">Property Type</label>
-              <select className="form-select" name="property_type" value={formData.property_type} onChange={handleChange}>
+              <select
+                className="form-select"
+                name="property_type"
+                value={formData.property_type}
+                onChange={handleChange}
+              >
                 <option value="single_family">Single Family</option>
                 <option value="condo">Condo</option>
               </select>
             </div>
-            <button type="submit" className="btn btn-primary w-100">Update</button>
+            <button type="submit" className="btn btn-primary w-100">
+              Submit
+            </button>
           </form>
         </div>
       </div>

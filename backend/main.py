@@ -1,12 +1,12 @@
-from .helpers import logger
+from backend.helpers import logger
 
 logger.setup_logging()
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import app_routers
-from .helpers import constant as sc
-from .controller.app_config import app_config
+from backend.routers import app_routers
+from backend.helpers import constant as sc
+from backend.controller.app_config import app_config
 
 # Initialize FastAPI application
 app = FastAPI(

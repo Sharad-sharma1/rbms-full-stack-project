@@ -2,14 +2,7 @@
 Module containing all reusable logics as utility functions.
 """
 
-import logging
-import constant as sc
-
-def log_error(err: Exception):
-    """
-    Logs error details.
-    """
-    logging.error("Error: %s", str(err), exc_info=True)
+from . import constant as sc
 
 def success_response(message: str = sc.SUCCESS_MESSAGE, data: dict = None):
     """
